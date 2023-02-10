@@ -29,7 +29,7 @@ public class ListController {
     public static void show(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("listView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        stage.setTitle("Personen anzeigen");
         stage.setScene(scene);
         stage.show();
     }

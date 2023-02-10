@@ -27,9 +27,9 @@ public class Controller {
 
     public static void show() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load());
         stage = new Stage();
-        stage.setTitle("Hello!");
+        stage.setTitle("Neue Person hinzufügen");
         stage.setScene(scene);
         stage.show();
     }
