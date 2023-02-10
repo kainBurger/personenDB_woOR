@@ -1,17 +1,19 @@
 package com.example.persdb;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Person;
+import model.PersonException;
+import persistence.Persistence;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Controller {
 
@@ -21,18 +23,27 @@ public class Controller {
     public Button btOk;
 
     private Person model;
+    private static Stage stage;
 
     public static void show() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        Stage stage = new Stage();
+        stage = new Stage();
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
     }
 
 
-    public void btOkClicked(ActionEvent actionEvent) throws IOException {
-        model = new Person(Integer.parseInt(tfID.getText()), tfName.getText(), tfWohnort.getText());
+    public void btOkClicked(ActionEvent actionEvent) throws IOException, SQLException {
+        try {
+            if(tfID.getText().length() == 0 || Integer.parseInt(tfID.getText()) < 0)
+                throw new PersonException("ID muss größer 0 sein!");
+            model = new Person(Integer.parseInt(tfID.getText()), tfName.getText(), tfWohnort.getText());
+            Persistence.getInstance().insertPerson(model);
+            stage.close();
+        }catch(PersonException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+        }
     }
 }
